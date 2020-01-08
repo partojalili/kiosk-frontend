@@ -1,0 +1,99 @@
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+**Consetion Kiosk Demo**
+====================
+:imagesdir: img
+
+== Prerequisites
+
+Before you start, you’ll need access to a Red Hat OpenShift cluster. If you don’t already have access to one, you can install Red Hat CodeReady Containers, which will allow you to run OpenShift in the CodeReady Containers virtual machine on your local computer. To install CodeReady Containers, go to https://try.openshift.com and choose Laptop as your infrastructure provider:
+
+image::ocp.png[500,500]
+Another option is to sign up for OpenShift Online’s free starter tier or a 30-day free trial of the pro tier.
+
+Once you have access to an OpenShift cluster, be sure you have access to the odo command-line tool.
+
+=== **Installing odo on Linux**
+
+==== [aqua]**Binary installation**
+
+```
+# curl -L https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-amd64 -o /usr/local/bin/odo
+# chmod +x /usr/local/bin/odo
+```
+
+==== [aqua]**Tarball installation**
+```
+# sh -c 'curl -L https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-linux-amd64.tar.gz | gzip -d > /usr/local/bin/odo'
+# chmod +x /usr/local/bin/odo
+```
+
+=== **Installing odo on macOS**
+
+==== [aqua]**Binary installation**
+
+```
+# curl -L https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-darwin-amd64 -o /usr/local/bin/odo
+# chmod +x /usr/local/bin/odo
+```
+
+==== [aqua]**Tarball installation**
+```
+# sh -c 'curl -L https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-darwin-amd64.tar.gz | gzip -d > /usr/local/bin/odo'
+# chmod +x /usr/local/bin/odo
+```
+
+== **Deploy the back end nodejs app on OpenShift**
+
+.1. Create a folder to store backend and frontend code 
+```
+mkdir kiosk
+cd kiosk
+```
+.2. you need to get the code from github:
+
+```
+git clone https://github.com/Keyvan-rh/kiosk-backend.git
+cd kiosk-backend/
+```
+
+.3. Use odo to build and deploy backend to Openshift
+
+.. odo login <ocp server API uri> -u <user> -p <password>
+.. odo project create kiosk
+.. odo create nodejs backend
+.. odo push
+
+image::odo-backend.png[500,500]
+
+Check the log and make sure the app started correctly
+
+image::backend-log.png[500,500]
+
+NOTE: If you login to Openshift 4.2 you should see your depoyment on the developers view:
+
+image::ocp-dev-backend.png[500,500]
+
+== **Deploy the front end nodejs app on OpenShift**
+
+NOTE: Make sure you are in the folder you create on step one above [yellow]**kiosk** before movin forward.
+
+.1. Get code from github
+```
+git clone https://github.com/Keyvan-rh/kiosk-frontend.git
+cd kiosk-frontend/
+```
+
+.2. Use odo to build and deploy backend to Openshift
+
+.. odo create nodejs frontend
+.. odo push
+
+image::odo-frontend.png[500,500]
+image::ocp-dev-frontend.png[500,500]
