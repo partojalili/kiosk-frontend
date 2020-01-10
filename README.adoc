@@ -144,8 +144,8 @@ odo service create
 this command will show a list of available service provided by openshift out of the box. lets pick database and select mongodb-ephemeral
 you can accept the rest of default values.
 
-image::odo-service-1.png[500,250]
-image::odo-service-2.png[500,250]
+image::odo-service-1.png[500,500]
+image::odo-service-2.png[500,500]
 
 NOTE: if you do not want to step through this process just run the following command
 ```
@@ -161,7 +161,7 @@ odo link mongodb-ephemeral
 ```
 you should see an output similar to this:
 
-image::db-link.png[500,500]
+image::db-link.png[700,700]
 
 after linking database to backend the odo is adding some extra environment variable to your pod and would restart the pod so the aplication could utilize trhe to connect to the database.
 
@@ -189,9 +189,9 @@ Now that we have change the assets lets redeploy the code:
 ```
 odo push
 ```
-Lets try ordering again, this time you see your order recorder and get an order number.
+Lets try ordering again, this time you see your new images in frontend app.
 
 image::order-change-1.png[500,500]
 image::order-change-2.png[500,500]
 
-Now the boss is happy, but we know that is not through and they ask to change it again but know you know after the code change you just need to say/type the magic word [green]** odo push**
+Now the boss is happy, but we know that is not true and they ask you to change it again! but now you know after any code change you just need to say/type the magic word [green]** odo push**
