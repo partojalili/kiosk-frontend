@@ -172,4 +172,26 @@ Lets try ordering again, this time you see your order recorder and get an order 
 
 image::order.png[500,500]
 
+We are not completely done just stay with me for couple more minuts.
+Lets say you build this app and demo it to your manager and they like everything but siad that some front end looks too cartoonee and want you to change that.
+I have prepare anouther set that for the sake of time you can use and see what it would take to change the app and redeploy as this is a normal part of our life as a developer, code, deploy, validate, and start over.
 
+Do the following to use the new set of images.
+```
+cd <frontend app code location>
+mv public/images public/images-2
+mv public/images-1 public/images
+mv public/stylesheets/style.css public/stylesheets/style-2.css
+mv public/stylesheets/style-1.css public/stylesheets/style.css
+```
+Now that we have change the assets lets redeploy the code:
+
+```
+odo push
+```
+Lets try ordering again, this time you see your order recorder and get an order number.
+
+image::order-change-1.png[500,500]
+image::order-change-2.png[500,500]
+
+Now the boss is happy, but we know that is not through and they ask to change it again but know you know after the code change you just need to say/type the magic word [green]** odo push**
