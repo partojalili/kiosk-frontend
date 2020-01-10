@@ -65,14 +65,18 @@ cd kiosk-backend/
 
 .3. Use odo to build and deploy backend to Openshift
 
-.. odo login <ocp server API uri> -u <user> -p <password>
-.. odo project create kiosk
-.. odo create nodejs backend
-.. odo push
+```
+odo login <ocp server API uri> -u <user> -p <password>
+odo project create kiosk
+odo create nodejs backend
+odo push
+```
+
+[teal]#Output:#
 
 image::odo-backend.png[500,500]
 
-Check the log and make sure the app started correctly
+NOTE: Check the log and make sure the app started correctly
 
 image::backend-log.png[500,500]
 
@@ -92,8 +96,80 @@ cd kiosk-frontend/
 
 .2. Use odo to build and deploy backend to Openshift
 
-.. odo create nodejs frontend
-.. odo push
+```
+odo create nodejs frontend
+odo push
+```
+
+[teal]#Output:#
 
 image::odo-frontend.png[500,500]
+================================
 image::ocp-dev-frontend.png[500,500]
+
+NOTE: validate that the frontend app is start with 
+
+As the frontend app needs to be accessed by client outside of the openshift we need to create a **URL** for it, this is done with the following commands:
+```
+odo url create
+odo push
+```
+get the **URL** you just created and access it on your browser. you should see this image:
+```
+odo url list
+```
+image::kiosk-menu.png[500,500]
+
+
+.3. Link Frontend to Backend 
+Now that we have both frontend and backend deployed we need to make sure that the frontend app would use the backend as a service to fulfill the request.
+This is easliy easdone by the [green]*odo link* command as below:
+```
+cd <frontend folder location>
+odo link backend
+```
+Lets test the application, go to the frontend app in your browser and order something.
+you shouled see this responce:
+
+image::order-no-db.png[500,250]
+
+as you can see the order number is 9999 and you can not see your items this is because the backedn opp need a database to store the orders which we have not deployed yet. as long as we are in a role let do it!
+
+.4. Create an ephemeral mongodb 
+
+To create a mongodb we can use the following command :
+```
+odo service create
+``` 
+this command will show a list of available service provided by openshift out of the box. lets pick database and select mongodb-ephemeral
+you can accept the rest of default values.
+
+image::odo-service-1.png[500,250]
+image::odo-service-2.png[500,250]
+
+NOTE: if you do not want to step through this process just run the following command
+```
+odo service create mongodb-ephemeral mongodb-ephemeral --plan default -p DATABASE_SERVICE_NAME=mongodb -p MEMORY_LIMIT=512Mi -p MONGODB_DATABASE=sampledb -p MONGODB_VERSION=3.6
+```
+image::ocp-dev-db.png[500,500]
+
+We are almost done, now that we have a database we just need to link it top the backend appl.
+if you accept the default values the name of your servcie for the mongodb should be mongodb-ephemeral and you can use the followin command to link them together.
+```
+cd <backend app code location>
+odo link mongodb-ephemeral
+```
+you should see an output similar to this:
+
+image::db-link.png[500,500]
+
+after linking database to backend the odo is adding some extra environment variable to your pod and would restart the pod so the aplication could utilize trhe to connect to the database.
+
+NOTE: you can explore this in index.js file in your backend folder:
+const dbConnectionUrl = process.env.MONGODB_URL || 'mongodb://' + process.env.username +':'+ process.env.password+'@mongodb/' +process.env.database_name;
+
+Lets try ordering again, this time you see your order recorder and get an order number.
+
+image::order.png[500,500]
+
+
