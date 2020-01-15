@@ -130,7 +130,7 @@ odo link backend
 Lets test the application, go to the frontend app in your browser and order something.
 you shouled see this responce:
 
-image::order-no-db.png[500,250]
+image::order-no-db.png[700,700]
 
 as you can see the order number is 9999 and you can not see your items this is because the backedn opp need a database to store the orders which we have not deployed yet. as long as we are in a role let do it!
 
