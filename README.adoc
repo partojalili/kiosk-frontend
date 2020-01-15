@@ -103,7 +103,6 @@ odo push
 
 [teal]#Output:#
 
-image::odo-frontend.png[500,500]
 ================================
 image::ocp-dev-frontend.png[500,500]
 
