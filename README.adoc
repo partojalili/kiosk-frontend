@@ -12,7 +12,7 @@ endif::[]
 
 == Prerequisites
 
-Before you start, you’ll need access to a Red Hat OpenShift cluster. If you don’t already have access to one, you can install Red Hat CodeReady Containers, which will allow you to run OpenShift in the CodeReady Containers virtual machine on your local computer. To install CodeReady Containers, go to https://try.openshift.com and choose Laptop as your infrastructure provider:
+Before you start, you need access to a Red Hat OpenShift cluster. If you don’t already have access to one, you can install Red Hat CodeReady Containers, which will allow you to run OpenShift in the CodeReady Containers virtual machine on your local computer. To install CodeReady Containers, go to https://try.openshift.com and choose Laptop as your infrastructure provider:
 
 image::ocp.png[500,500]
 Another option is to sign up for OpenShift Online’s free starter tier or a 30-day free trial of the pro tier.
@@ -49,7 +49,7 @@ Once you have access to an OpenShift cluster, be sure you have access to the odo
 # chmod +x /usr/local/bin/odo
 ```
 
-== **Deploy the back end nodejs app on OpenShift**
+== **Deploy the backend node.js app on OpenShift**
 
 .1. Create a folder to store backend and frontend code 
 ```
@@ -84,9 +84,9 @@ NOTE: If you login to Openshift 4.2 you should see your depoyment on the develop
 
 image::ocp-dev-backend.png[500,500]
 
-== **Deploy the front end nodejs app on OpenShift**
+== **Deploy the frontend node.js app on OpenShift**
 
-NOTE: Make sure you are in the folder you create on step one above [yellow]**kiosk** before movin forward.
+NOTE: Make sure you are in the folder you created in step one  [yellow]**kiosk** before moving forward.
 
 .1. Get code from github
 ```
@@ -97,7 +97,7 @@ cd kiosk-frontend/
 .2. Use odo to build and deploy backend to Openshift
 
 ```
-odo create nodejs frontend
+odo create node.js frontend
 odo push
 ```
 
@@ -122,7 +122,7 @@ image::kiosk-menu.png[500,500]
 
 .3. Link Frontend to Backend 
 Now that we have both frontend and backend deployed we need to make sure that the frontend app would use the backend as a service to fulfill the request.
-This is easliy easdone by the [green]*odo link* command as below:
+This is easliy done by the [green]*odo link* command as below:
 ```
 cd <frontend folder location>
 odo link backend
@@ -132,11 +132,11 @@ you shouled see this responce:
 
 image::order-no-db.png[700,700]
 
-as you can see the order number is 9999 and you can not see your items this is because the backedn opp need a database to store the orders which we have not deployed yet. as long as we are in a role let do it!
+as you can see the order number is 9999 and you can not see your items. This is because the backend app needs a database to store the orders which we have not deployed yet. As long as we are in a role let's do it!
 
 .4. Create an ephemeral mongodb 
 
-To create a mongodb we can use the following command :
+To create a mongodb. we can use the following command :
 ```
 odo service create
 ``` 
@@ -153,7 +153,7 @@ odo service create mongodb-ephemeral mongodb-ephemeral --plan default -p DATABAS
 image::ocp-dev-db.png[500,500]
 
 We are almost done, now that we have a database we just need to link it top the backend appl.
-if you accept the default values the name of your servcie for the mongodb should be mongodb-ephemeral and you can use the followin command to link them together.
+if you accept the default values, the name of your servcie for the mongodb should be mongodb-ephemeral and you can use the following command to link them together.
 ```
 cd <backend app code location>
 odo link mongodb-ephemeral
@@ -162,7 +162,7 @@ you should see an output similar to this:
 
 image::db-link.png[700,700]
 
-after linking database to backend the odo is adding some extra environment variable to your pod and would restart the pod so the aplication could utilize trhe to connect to the database.
+after linking database to backend, the odo is adding some extra environment variable to your pod and would restart the pod so the aplication could utilize the  connectivity to the database.
 
 NOTE: you can explore this in index.js file in your backend folder:
 const dbConnectionUrl = process.env.MONGODB_URL || 'mongodb://' + process.env.username +':'+ process.env.password+'@mongodb/' +process.env.database_name;
@@ -172,8 +172,8 @@ Lets try ordering again, this time you see your order recorder and get an order 
 image::order.png[500,500]
 
 We are not completely done just stay with me for couple more minuts.
-Lets say you build this app and demo it to your manager and they like everything but siad that some front end looks too cartoonee and want you to change that.
-I have prepare anouther set that for the sake of time you can use and see what it would take to change the app and redeploy as this is a normal part of our life as a developer, code, deploy, validate, and start over.
+Lets say you build this app and demo it to your manager and they like everything but said that some frontend looks too cartoonee and want you to change that.
+I have prepared another set for that. for the sake of time you can use and see what it would take to change the app and redeploy as this is a normal part of our life as a developer, code, deploy, validate, and start over.
 
 Do the following to use the new set of images.
 ```
@@ -183,7 +183,7 @@ mv public/images-1 public/images
 mv public/stylesheets/style.css public/stylesheets/style-2.css
 mv public/stylesheets/style-1.css public/stylesheets/style.css
 ```
-Now that we have change the assets lets redeploy the code:
+Now that we have changed the assets lets redeploy the code:
 
 ```
 odo push
